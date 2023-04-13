@@ -1,0 +1,26 @@
+controller:
+  admissionWebhooks:
+    enabled: false
+
+  ingressClassResource:
+    default: true
+  
+  extraContainers:
+    - name: tailscale-sidecar
+      imagePullPolicy: Always
+      image: "ghcr.io/tailscale/tailscale:latest"
+      env:
+      - name: TS_KUBE_SECRET
+        value: ${tailscale_state_secret_name}
+      - name: TS_USERSPACE
+        value: "false"
+      - name: TS_AUTH_KEY
+        valueFrom:
+          secretKeyRef:
+            name: ${tailscale_auth_key_secret_name}
+            key: ts_auth_key
+            optional: true
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
