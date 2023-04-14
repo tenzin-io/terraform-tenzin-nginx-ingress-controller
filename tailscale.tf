@@ -11,20 +11,19 @@ resource "kubernetes_secret_v1" "tailscale_auth_key_secret" {
   count = var.enable_tailscale_tunnel ? 1 : 0
   metadata {
     name      = local.tailscale_auth_key_secret_name
-    namespace = var.nginx_namespace
+    namespace = kubernetes_namespace_v1.nginx_namespace.metadata.0.name
   }
 
   data = {
     ts_auth_key = var.tailscale_auth_key
   }
-
 }
 
 resource "kubernetes_role_v1" "tailscale_role" {
   count = var.enable_tailscale_tunnel ? 1 : 0
   metadata {
     name      = "tailscale-role"
-    namespace = var.nginx_namespace
+    namespace = kubernetes_namespace_v1.nginx_namespace.metadata.0.name
   }
 
   rule {
@@ -38,24 +37,22 @@ resource "kubernetes_role_v1" "tailscale_role" {
     resources  = ["secrets"]
     verbs      = ["create"]
   }
-  depends_on = [helm_release.nginx_ingress]
 }
 
 resource "kubernetes_role_binding_v1" "tailscale_role_binding" {
   count = var.enable_tailscale_tunnel ? 1 : 0
   metadata {
     name      = "tailscale-role-binding"
-    namespace = var.nginx_namespace
+    namespace = kubernetes_namespace_v1.nginx_namespace.metadata.0.name
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Role"
-    name      = "tailscale-role"
+    name      = kubernetes_role_v1.tailscale_role.0.metadata.0.name
   }
   subject {
     kind      = "ServiceAccount"
     name      = "ingress-nginx"
-    namespace = var.nginx_namespace
+    namespace = kubernetes_namespace_v1.nginx_namespace.metadata.0.name
   }
-  depends_on = [helm_release.nginx_ingress]
 }
