@@ -11,6 +11,6 @@ resource "helm_release" "nginx_ingress" {
   repository       = "https://kubernetes.github.io/ingress-nginx"
   version          = "4.4.0"
   create_namespace = true
-  values           = [var.enable_tailscale_tunnel ? data.template_file.nginx_values_with_tailscale.rendered : file("${path.module}/files/values.yaml")]
+  values           = [var.enable_tailscale_tunnel ? data.template_file.nginx_values_with_tailscale.rendered : data.template_file.nginx_values_without_tailscale.rendered]
   depends_on       = [kubernetes_role_binding_v1.tailscale_role_binding]
 }

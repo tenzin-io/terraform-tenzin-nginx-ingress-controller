@@ -19,3 +19,9 @@ variable "nginx_namespace" {
   default     = "nginx"
   description = "The namespace to deploy Nginx."
 }
+
+variable "nginx_service_type" {
+  type        = string
+  default     = "LoadBalancer"
+  description = "The type of Nginx ingress service. Ex. NodePort or LoadBalancer"
+}

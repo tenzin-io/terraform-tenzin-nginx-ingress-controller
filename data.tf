@@ -5,3 +5,11 @@ data "template_file" "nginx_values_with_tailscale" {
     tailscale_state_secret_name    = local.tailscale_state_secret_name
   }
 }
+
+data "template_file" "nginx_values_without_tailscale" {
+  template = file("${path.module}/files/values-without-tailscale.yaml")
+  vars = {
+    nginx_service_type = var.nginx_service_type
+    enable_host_port   = var.nginx_service_type == "NodePort" ? true : false
+  }
+}

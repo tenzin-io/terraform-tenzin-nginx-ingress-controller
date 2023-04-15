@@ -1,6 +1,13 @@
 controller:
+  service:
+    type: ${nginx_service_type}
+
+  hostPort:
+    enabled: ${enable_host_port}
+
   admissionWebhooks:
     enabled: false
 
   ingressClassResource:
     default: true
+

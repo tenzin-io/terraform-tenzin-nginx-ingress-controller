@@ -26,6 +26,7 @@ Useful Nginx ingress tuning and setup:
 | [kubernetes_role_v1.tailscale_role](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_v1) | resource |
 | [kubernetes_secret_v1.tailscale_auth_key_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [template_file.nginx_values_with_tailscale](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+| [template_file.nginx_values_without_tailscale](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
@@ -33,5 +34,6 @@ Useful Nginx ingress tuning and setup:
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_tailscale_tunnel"></a> [enable\_tailscale\_tunnel](#input\_enable\_tailscale\_tunnel) | Enable Tailscale tunnel on Nginx controller | `bool` | `false` | no |
 | <a name="input_nginx_namespace"></a> [nginx\_namespace](#input\_nginx\_namespace) | The namespace to deploy Nginx. | `string` | `"nginx"` | no |
+| <a name="input_nginx_service_type"></a> [nginx\_service\_type](#input\_nginx\_service\_type) | The type of Nginx ingress service. Ex. NodePort or LoadBalancer | `string` | `"LoadBalancer"` | no |
 | <a name="input_tailscale_auth_key"></a> [tailscale\_auth\_key](#input\_tailscale\_auth\_key) | The Tailscale auth key to join to the tailnet. | `string` | `null` | no |
 <!-- END_TF_DOCS -->
